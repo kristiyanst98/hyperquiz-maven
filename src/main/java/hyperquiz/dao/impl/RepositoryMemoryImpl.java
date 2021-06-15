@@ -3,14 +3,11 @@ package hyperquiz.dao.impl;
 import hyperquiz.dao.KeyGenerator;
 import hyperquiz.dao.Repository;
 import hyperquiz.exceptions.EntityAlreadyExistsException;
+import hyperquiz.exceptions.EntityCreationException;
 import hyperquiz.exceptions.EntityDataInvalidException;
 import hyperquiz.model.Identifiable;
 
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RepositoryMemoryImpl<K, V extends Identifiable<K>> implements Repository<K, V> {
@@ -82,5 +79,10 @@ public class RepositoryMemoryImpl<K, V extends Identifiable<K>> implements Repos
     @Override
     public long count() {
         return entities.size();
+    }
+
+    @Override
+    public List<V> createBatch(Collection<V> collection)throws EntityCreationException {
+        return null;
     }
 }

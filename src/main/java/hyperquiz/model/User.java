@@ -1,19 +1,54 @@
 package hyperquiz.model;
 
+import lombok.NonNull;
+
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name="users")
 public class User extends AbstractEntity<Long,User> {
+
+    @Column(name="username",nullable = false,unique = true)
+    @Size(min=2,max=15,message="Username must be between 2 and 15 characters")
     private String username;
+
+    @Column(nullable = false,unique = true)
+    @Email
     private String email;
+
+    @Column(nullable = false)
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+,.\\\\\\/;':\"-]).{8,}$")
+    @Size(min=8,max=15,message="Password must be between 8 and 15 characters")
     private String password;
+
+    @Enumerated(EnumType.ORDINAL)
+    @NonNull
     private Gender gender;
+
+    @Enumerated(EnumType.ORDINAL)
     private Role role=Role.PLAYER;
+
+    @Column
     private URL userPicture;
+
+    @Column
+    @Size(min=8,max=15,message="Password must be between 8 and 15 characters")
     private String description;
+
+    @Column
+    @Size(min=512,max=512)
     private String metadata;
+
+    @Column
     private boolean status;
+
+    @OneToMany(mappedBy = "author")
     private List<Quiz> quizzes=new ArrayList<>();
 
     public User() {
@@ -66,6 +101,17 @@ public class User extends AbstractEntity<Long,User> {
         this.userPicture = userPicture;
         this.description = description;
         this.metadata = metadata;
+    }
+
+    public User(String username, String email, String password, @NonNull Gender gender, Role role, String description, String metadata, boolean status) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.gender = gender;
+        this.role = role;
+        this.description = description;
+        this.metadata = metadata;
+        this.status = status;
     }
 
     public String getUsername() {
