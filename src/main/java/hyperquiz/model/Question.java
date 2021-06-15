@@ -1,14 +1,24 @@
 package hyperquiz.model;
 
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question implements Serializable {
+@Table(name="questions")
+@Entity
+public class Question extends AbstractEntity<Long,Question> implements Serializable {
+    @ManyToOne
     private Quiz quiz;
+
+    @Column
+    @Size(min = 10, max = 300, message = "Question must be between 10 and 300 characters")
     private String text;
+    @Column
     private URL picture;
+    @OneToMany(mappedBy = "question")
     private List<Answer> answers;
 
     public Question() {

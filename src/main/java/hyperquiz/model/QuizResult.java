@@ -1,8 +1,22 @@
 package hyperquiz.model;
 
+import lombok.NonNull;
+
+import javax.persistence.*;
+
+@Table(name="quizresults")
+@Entity
 public class QuizResult extends AbstractEntity<Long,QuizResult>{
-    private Player player;
+
+    @ManyToOne
+    @NonNull
+    private User player;
+
+    @ManyToOne
+    @NonNull
     private Quiz quiz;
+
+    @Transient
     private int score;
 
     public QuizResult() {

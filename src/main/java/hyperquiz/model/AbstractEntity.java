@@ -1,12 +1,21 @@
 package hyperquiz.model;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.util.Date;
 
+@MappedSuperclass
 public abstract class AbstractEntity<K extends Comparable<K>, V extends Identifiable<K>>
         implements Identifiable<K>, Comparable<V>, Serializable {
+
+    @Id
     private K id;
+
+    @Column
     private Date created = new Date();
+    @Column
     private Date modified = new Date();
 
     public AbstractEntity() {

@@ -1,12 +1,28 @@
 package hyperquiz.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.net.URL;
 
-public class Answer implements Serializable {
+@Entity
+@Table(name="answers")
+public class Answer extends AbstractEntity<Long,Answer> implements Serializable {
+
+    @ManyToOne
     private Question question;
+
+    @Column(nullable = false)
+    @Size(min = 2, max = 150, message = "Answer must be between 2 and 150 characters")
     private String text;
+
+    @Column
     private URL picture;
+
+    @Column(nullable = false)
     private int score;
 
     public Answer() {

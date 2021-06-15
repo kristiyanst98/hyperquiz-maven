@@ -1,16 +1,36 @@
 package hyperquiz.model;
 
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+@Table(name="quizzes")
+@Entity
 public class Quiz extends AbstractEntity<Long,Quiz> {
+
+    @Column(nullable = false,unique = true)
+    @Size(min=2, max=80,message = "Title must be between 2 and 80 characters")
     private String title;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private User author;
+
+    @Column
+    @Size(min=20, max=150,message = "Description must be between 20 and 150 characters")
     private String description;
+
+    @OneToMany(mappedBy = "quiz")
     private List<Question> questions=new ArrayList<>();
+
+    @Column(nullable = false)
     private int expectedDuration;
+
+    @Column
     private URL picture;
+
+    @Column
     private String tags;
 
     public Quiz() {
