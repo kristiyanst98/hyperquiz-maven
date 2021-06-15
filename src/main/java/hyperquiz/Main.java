@@ -3,13 +3,11 @@ package hyperquiz;
 import hyperquiz.dao.UserRepository;
 import hyperquiz.dao.impl.UserJpaRepositoryImpl;
 import hyperquiz.exceptions.EntityCreationException;
-import hyperquiz.exceptions.EntityDataInvalidException;
 import hyperquiz.model.Gender;
 import hyperquiz.model.Role;
 import hyperquiz.model.User;
 import hyperquiz.util.PrintUtil;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,18 +74,18 @@ public class Main {
 
     public static final List<PrintUtil.ColumnDescriptor> USER_COLUMNS = List.of(
             new PrintUtil.ColumnDescriptor("id", "ID", 5, RIGHT),
-            new PrintUtil.ColumnDescriptor("username", "Username", 5, LEFT),
-            new PrintUtil.ColumnDescriptor("email", "Email", 12, LEFT),
-            new PrintUtil.ColumnDescriptor("password", "Password", 12, LEFT),
+            new PrintUtil.ColumnDescriptor("username", "Username", 15, LEFT),
+            new PrintUtil.ColumnDescriptor("email", "Email", 15, LEFT),
+            new PrintUtil.ColumnDescriptor("password", "Password", 20, LEFT),
             new PrintUtil.ColumnDescriptor("gender", "Gender", 8, RIGHT, 2),
-            new PrintUtil.ColumnDescriptor("role", "Role", 5, CENTER),
-            new PrintUtil.ColumnDescriptor("description", "Description", 5, CENTER),
+            new PrintUtil.ColumnDescriptor("role", "Role", 10, CENTER),
+            new PrintUtil.ColumnDescriptor("description", "Description", 15, CENTER),
             new PrintUtil.ColumnDescriptor("status", "Status", 5, CENTER),
             new PrintUtil.ColumnDescriptor("created", "Created", 19, CENTER),
             new PrintUtil.ColumnDescriptor("updated", "Updated", 19, CENTER)
     );
 
-    public static void main(String[] args) throws MalformedURLException, EntityDataInvalidException {
+    public static void main(String[] args) throws Exception {
         URL myURL = new URL("http://example.com/pages/");
 
 
@@ -110,17 +108,37 @@ public class Main {
                 e.printStackTrace();
             }
 
-            String productReport1 = PrintUtil.formatTable(USER_COLUMNS, created, "Created User List:");
-            System.out.println(productReport1);
+            String usersRep = PrintUtil.formatTable(USER_COLUMNS, created, "Created User List:");
+            System.out.println(usersRep);
         }
+
+//        ur.create(users[2]);
+        String userReport = PrintUtil.formatTable(USER_COLUMNS, ur.findAll(), "Created User List:");
+        System.out.println(userReport);
+
 //        User deleteUser = ur.deleteById(3L);
 //        System.out.println("Deleted user: "+deleteUser.getId());
+//        String afterDeleteReport = PrintUtil.formatTable(USER_COLUMNS, ur.findAll(), "After delete User List:");
+//        System.out.println(afterDeleteReport);
+//
         Optional<User> nonExistingUser=ur.findByUsername("user1");
         if(nonExistingUser.isPresent()){
             System.out.println(nonExistingUser.get());
         }else{
             System.out.println("User with username: user5 doesn't exist");
         }
+
+
+        Optional<User> user1=ur.findById(1L);
+        if(user1.isPresent()){
+            user1.get().setUsername("updatedUser1");
+            ur.update(user1.get());
+            String updatedReport = PrintUtil.formatTable(USER_COLUMNS, ur.findAll(), "Updated User List:");
+            System.out.println(updatedReport);
+        }
+
+
+
 
 
 

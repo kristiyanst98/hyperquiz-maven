@@ -51,7 +51,7 @@ public class UserJpaRepositoryImpl implements UserRepository {
         try{
             User updatedUser=em.merge(entity);
             transaction.commit();
-            return entity;
+            return updatedUser;
         }catch (IllegalArgumentException | PersistenceException e){
             transaction.rollback();
             throw new Exception("Error updating entity"+entity+", "+e);
